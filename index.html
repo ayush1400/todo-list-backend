@@ -1,0 +1,112 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Todo App</title>
+  <style>
+    body {
+      font-family: Arial;
+      padding: 20px;
+      background: #f0f0f0;
+    }
+    .todo-box {
+      background: white;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+    button {
+      margin-right: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Todo List</h1>
+
+  <h3>Create Todo</h3>
+  <input id="desc" placeholder="Enter task" />
+  <input id="completed" placeholder="true/false" />
+  <button onclick="createTodo()">Add</button>
+
+  <hr>
+
+  <h3>All Todos</h3>
+  <div id="todoList"></div>
+
+  <script>
+    const API = "http://localhost:8000";
+
+    // ---------- READ TODOS ----------
+    async function loadTodos() {
+      const res = await fetch(`${API}/show`);
+      const data = await res.json();
+
+      const container = document.getElementById("todoList");
+      container.innerHTML = "";
+
+      data.todos.forEach(todo => {
+        const box = document.createElement("div");
+        box.className = "todo-box";
+        box.innerHTML = `
+            <p><b>ID:</b> ${todo._id}</p>
+            <p><b>Task:</b> ${todo.desc1}</p>
+            <p><b>Completed:</b> ${todo.completed1}</p>
+
+            <input id="updateDesc-${todo._id}" placeholder="New task" />
+            <input id="updateCompleted-${todo._id}" placeholder="true/false" />
+
+            <button onclick="updateTodo('${todo._id}')">Update</button>
+            <button onclick="deleteTodo('${todo._id}')">Delete</button>
+        `;
+        container.appendChild(box);
+      });
+    }
+
+    // ---------- CREATE ----------
+    async function createTodo() {
+      const desc = document.getElementById("desc").value;
+      const completed = document.getElementById("completed").value;
+
+      if (!desc || !completed) {
+        alert("Fill all fields");
+        return;
+      }
+
+      await fetch(`${API}/create/${desc}/${completed}`);
+      loadTodos();
+    }
+
+    // ---------- UPDATE ----------
+    async function updateTodo(id) {
+      const newDesc = document.getElementById(`updateDesc-${id}`).value;
+      const newCompleted = document.getElementById(`updateCompleted-${id}`).value;
+
+      const body = {};
+      if (newDesc) body.desc1 = newDesc;
+      if (newCompleted) body.completed1 = newCompleted;
+
+      const res = await fetch(`${API}/update/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+      });
+
+      const data = await res.json();
+      alert(data.message || data.error);
+
+      loadTodos();
+    }
+
+    // ---------- DELETE ----------
+    async function deleteTodo(id) {
+      await fetch(`${API}/delete/${id}`);
+      loadTodos();
+    }
+
+    loadTodos();
+  </script>
+
+</body>
+</html> -->
